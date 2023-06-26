@@ -4,5 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates_confirmation_of :password    
+  validates_confirmation_of :password
+
+  enum role: { user: 0, admin: 1 }
 end
