@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SimpleEcommerce</title>
+    <title>Simple Ecommerce</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <ul>
+      <li><%= link_to "Home", root_path %></li>
+      <% if user_signed_in? %>
+        <li>Hello <%= current_user.name %> </li>
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, data: {confirm: "Are you sure?"} %>
+
+      <% else %>
+        <li><%= link_to "SignUp", new_user_registration_path %></li>
+        <li><%= link_to "Login",  user_session_path %></li>
+      <% end %>
+    </ul>
+
     <p class="notice"><%= notice %></p> 
     <p class="alert"><%= alert %></p> 
     <%= yield %>

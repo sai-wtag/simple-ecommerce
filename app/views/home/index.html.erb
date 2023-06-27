@@ -1,7 +1,7 @@
-<h1>Online Bus Ticket</h1>
+<h1>Simple Ecom</h1>
 
 <% if can? :manage, @all %>
-  <h2>Hey Admin</h2>
+  <h2>Hey <%= current_user.name %></h2>
 <% else %>
   <h2>Welcome User !</h2>
 <% end %>
