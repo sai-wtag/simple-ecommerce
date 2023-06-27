@@ -1,0 +1,49 @@
+<%= form_with model: order do |f| %>
+  <table>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+    </tr>
+    <% @items.each do |item| %>
+      <tr>
+        <td>
+          <%= item.name %>
+        </td>
+        <td>
+            <input type="number" name="item_ids[]" value="0">
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form__group {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .form__label {
+    font-weight: bold;
+    width: 5rem;
+  }
+
+  .form__input {
+    width: 10rem;
+  }
+
+  .form__error {
+    color: red;
+  }
+</style>
