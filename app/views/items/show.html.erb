@@ -1,0 +1,38 @@
+<h1>Item: <%= @item.name %></h1>
+
+<table border="1">
+  <tr>
+    <th>Name</th>
+    <td> <%= @item.name %> </td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td> <%= @item.description %> </td>
+  </tr>
+  <tr>
+    <th>Price</th>
+    <td> <%= @item.price %> </td>
+  </tr>
+  <tr>
+    <th>Available Quantity</th>
+    <td> <%= @item.available_quantity %> </td>
+  </tr>
+</table>
+
+<ul>
+  <% if can? :manage, @items %>
+    <li>
+      <%= link_to "Edit", edit_item_path(@item) %> 
+    </>
+    <li>
+      <%= link_to "Destroy", item_path(@item), data:{
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure?"
+      } %>
+    </li>
+  <% end %>
+  
+  <li>
+    <%= link_to "View All Trips", items_path %>
+  </li>
+</ul>

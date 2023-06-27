@@ -7,6 +7,7 @@
     <th>Description</th>
     <th>Price</th>
     <th>Available Quantity</th>
+    <th>Actions</th>
   </tr>
   <% @items.each do |item| %>
     <tr>
@@ -15,6 +16,16 @@
       <td><%= item.description %></td>
       <td><%= item.price %></td>
       <td><%= item.available_quantity %></td>
+      <td>
+        <%= link_to "Show", item_path(item) %>
+        <% if can? :manage, @items %>
+          <%= link_to "Edit", edit_item_path(item) %>
+          <%= link_to "Destroy", item_path(item), data:{
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure?"
+          } %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>
