@@ -2,6 +2,12 @@
 
 <% if can? :manage, @all %>
   <h2>Hey <%= current_user.name %></h2>
+  <ui>
+    <li>
+      <%= link_to "MANAGE ITMES", items_path %>
+    </li>
+  </ui>
+
 <% else %>
   <h2>Welcome User !</h2>
 <% end %>

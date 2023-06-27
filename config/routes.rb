@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users do
-  delete '/users/sign_out' => 'devise/sessions#destroy'
-end
+  devise_for :users
+
+  resources :items
 
   root to: "home#index" 
 end
