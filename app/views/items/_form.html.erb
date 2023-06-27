@@ -20,6 +20,12 @@
       <div class="form__label"><%= f.label :price %></div>
       <div class="form__input"><%= f.number_field :price %></div>
     </div>
+
+    <div class="form__group">
+      <div class="form__label"><%= f.label :available_quantity %></div>
+      <div class="form__input"><%= f.number_field :available_quantity %></div>
+    </div>
+
     <div class="form__error">
       <% item.errors.full_messages_for(:price).each do |message| %>
         <div><%= message %></div>
