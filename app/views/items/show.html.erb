@@ -30,4 +30,6 @@
     <%= link_to "View All Items", items_path %>
   </li>
   </ul>
-  <%= button_to "Delete", item_path(@item), method: :delete, data: {confirm: "Are you sure?"} %>
+  <% if can? :manage, @items %>
+    <%= button_to "Delete", item_path(@item), method: :delete, data: {confirm: "Are you sure?"} %>
+  <% end %>
