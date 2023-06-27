@@ -39,6 +39,17 @@ class ItemsController < ApplicationController
       end
   end
 
+  def destroy
+    @item = Item.find(params[:id])
+    if @item.destroy
+      flash[:success] = 'Item was successfully deleted.'
+      redirect_to items_url
+    else
+      flash[:error] = 'Something went wrong'
+      redirect_to items_url
+    end
+  end
+
   private
     def item_params
       params.require(:item).permit(:name, :description, :price)

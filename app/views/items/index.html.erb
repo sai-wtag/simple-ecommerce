@@ -17,14 +17,13 @@
       <td><%= item.price %></td>
       <td><%= item.available_quantity >= 0 ? item.available_quantity : 0 %></td>
       <td>
-        <%= link_to "Show", item_path(item) %>
-        <% if can? :manage, @items %>
-          <%= link_to "Edit", edit_item_path(item) %>
-          <%= link_to "Destroy", item_path(item), data:{
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure?"
-          } %>
-        <% end %>
+        <div class="item-actions">
+          <%= link_to "Show", item_path(item) %>
+          <% if can? :manage, @items %>
+            <%= link_to "Edit", edit_item_path(item) %>
+            <%= button_to "Delete", item_path(item), method: :delete, data: {confirm: "Are you sure?"} %>
+          <% end %>
+        </div>
       </td>
     </tr>
   <% end %>
@@ -34,3 +33,12 @@
 <% if can? :manage, @items %>
   <%= link_to "Create New Item", new_item_path %>
 <% end %>
+
+<style>
+  .item-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 0.5rem;
+  }
+</style>
