@@ -22,14 +22,13 @@
 <ul>
   <% if can? :manage, @items %>
     <li>
-      <%= link_to "Edit", edit_item_path(@item) %> 
-    </>
+      <%= button_to "Edit", edit_item_path(@item) %> 
+    </li>
+    <li>
+      <%= button_to "Delete", item_path(@item), method: :delete, data: {confirm: "Are you sure?"} %>
+    </li>
   <% end %>
-  
   <li>
     <%= link_to "View All Items", items_path %>
   </li>
-  </ul>
-  <% if can? :manage, @items %>
-    <%= button_to "Delete", item_path(@item), method: :delete, data: {confirm: "Are you sure?"} %>
-  <% end %>
+</ul>
