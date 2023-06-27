@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 2023_06_27_054101) do
   enable_extension "plpgsql"
 
   create_table "items", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.decimal "price"
-    t.integer "available_quantity"
+    t.string "name", null: false
+    t.text "description", null: false
+    t.decimal "price", null: false
+    t.integer "available_quantity", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -15,7 +15,7 @@
       <td><%= item.name %></td>
       <td><%= item.description %></td>
       <td><%= item.price %></td>
-      <td><%= item.available_quantity %></td>
+      <td><%= item.available_quantity >= 0 ? item.available_quantity : 0 %></td>
       <td>
         <%= link_to "Show", item_path(item) %>
         <% if can? :manage, @items %>
