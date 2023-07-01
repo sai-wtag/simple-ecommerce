@@ -35,5 +35,9 @@ class OrdersController < ApplicationController
     order = Order.new(user_id: current_user.id, total_price: total_price)
     order.save
 
+    items.each do |item_id, quantity|
+      OrderItem.create(order_id: order.id, item_id: item_id, quantity: quantity)
+    end
+
   end
 end
