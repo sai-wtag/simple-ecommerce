@@ -4,14 +4,15 @@
       <th>Item</th>
       <th>Quantity</th>
     </tr>
-    <% @items.each do |item| %>
+    <% @items.each do |product| %>
       <tr>
-        <td>
-          <%= item.name %>
-        </td>
-        <td>
-            <input type="number" name="item_ids[]" value="0">
-        </td>
+          <td>
+            <%= product.name %>
+          </td>
+          <td>
+          <%= f.hidden_field :item_ids, multiple: true, value: product[:id], name: "order[item_ids][]" %>
+          <%= f.number_field :quantities, name: "order[quantities][]", value: 0 %>
+          </td>
       </tr>
     <% end %>
   </table>
