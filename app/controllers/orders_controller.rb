@@ -72,6 +72,12 @@ class OrdersController < ApplicationController
 
   def cancel_order
     order = Order.find(params[:id])
+
+    if !current_user.admin?  && order.user_id != current_user.id
+      flash[:error] = "You are not authorized to view this page"
+      return redirect_to root_path
+    end
+
     order.update(order_status: "cancelled")
 
     order.order_items.each do |order_item|
@@ -83,12 +89,31 @@ class OrdersController < ApplicationController
     redirect_to my_orders_path
   end
 
+  def change_order_status
+    if !current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      return redirect_to root_path
+    end
+
+    order = Order.find(params[:id])
+
+    case order.order_status
+    when "pending"
+      order.update(order_status: "shipped")
+    when "shipped"
+      order.update(order_status: "delivered")
+    end
+
+    flash[:success] = "Order status updated successfully"
+    redirect_to orders_path
+  end
+
   def show
     order = Order.find(params[:id])
 
     if !current_user.admin?  && order.user_id != current_user.id
       flash[:error] = "You are not authorized to view this page"
-      redirect_to root_path
+      return redirect_to root_path
     end
     
     @order = order

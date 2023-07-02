@@ -18,6 +18,15 @@
             <td><%= order.created_at.strftime('%Y-%m-%d') %></td>
             <td class="actions">
                 <%= link_to "View", order_path(order) %>
+
+                <% if order.order_status == "pending" %>
+                    <%= button_to "Send for Shipping", change_order_status_path(order), method: :put %>
+                <% end %>
+
+                <% if order.order_status == "shipped" %>
+                    <%= button_to "Deliver", change_order_status_path(order), method: :put %>
+                <% end %>
+
                 <%= button_to "Delete", order_path(order), method: :delete %>
             </td>
         </tr>
