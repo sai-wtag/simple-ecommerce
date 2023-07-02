@@ -60,3 +60,5 @@ gem "devise"
 gem 'cancancan'
 
 gem "turbo-rails", "~> 1.4"
+
+gem "grape", "~> 1.7"
