@@ -49,4 +49,8 @@ class OrdersController < ApplicationController
     flash[:success] = "Order created successfully"
     redirect_to root_path
   end
+
+  def my_orders
+    @orders = Order.where(user_id: current_user.id).order(created_at: :asc)
+  end
 end
