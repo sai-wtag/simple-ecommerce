@@ -1,34 +1,37 @@
 <h1>Items</h1>
 
-<table border = "2">
-  <tr>
-    <th>Id</th>
-    <th>Item Name</th>
-    <th>Description</th>
-    <th>Price</th>
-    <th>Available Quantity</th>
-    <th>Actions</th>
-  </tr>
-  <% @items.each do |item| %>
+<% if @items.empty? %>
+    <h2> You have no items yet </h2>
+<% else %>
+  <table border = "2">
     <tr>
-      <td><%= item.id %></td>
-      <td><%= item.name %></td>
-      <td><%= item.description %></td>
-      <td><%= item.price %></td>
-      <td><%= item.available_quantity >= 0 ? item.available_quantity : 0 %></td>
-      <td>
-        <div class="item-actions">
-          <%= link_to "Show", item_path(item) %>
-          <% if can? :manage, @items %>
-            <%= link_to "Edit", edit_item_path(item) %>
-            <%= button_to "Delete", item_path(item), method: :delete, data: {confirm: "Are you sure?"} %>
-          <% end %>
-        </div>
-      </td>
+      <th>Id</th>
+      <th>Item Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Available Quantity</th>
+      <th>Actions</th>
     </tr>
-  <% end %>
-</table>
-
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.id %></td>
+        <td><%= item.name %></td>
+        <td><%= item.description %></td>
+        <td><%= item.price %></td>
+        <td><%= item.available_quantity >= 0 ? item.available_quantity : 0 %></td>
+        <td>
+          <div class="item-actions">
+            <%= link_to "Show", item_path(item) %>
+            <% if can? :manage, @items %>
+              <%= link_to "Edit", edit_item_path(item) %>
+              <%= button_to "Delete", item_path(item), method: :delete, data: {confirm: "Are you sure?"} %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 <% if can? :manage, @items %>
   <%= link_to "Create New Item", new_item_path %>
 <% end %>
