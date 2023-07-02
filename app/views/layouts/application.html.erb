@@ -7,24 +7,35 @@
     <%= csp_meta_tag %>
 
     <style>
-      .error {
+      .error, .alert {
         color: red;
+        font-size: 20px;
       }
-      .success {
+
+      .success, .notice {
         color: green;
+        font-size: 20px;
+      }
+
+      .name {
+        font-weight: bold;
+        font-size: 18px;
       }
     </style>
   </head>
 
   <body>
+    <h1>Simple Ecommerce</h1>
     <ul>
       <li><%= link_to "Home", root_path %></li>
       <% if user_signed_in? %>
-        <li>Hello <%= current_user.name %> </li>
-        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, data: {confirm: "Are you sure?"} %>
+        <li> Hello <span class="name"><%= current_user.name %></span> </li>
+        <li>
+          <%= button_to "Sign Out", destroy_user_session_path, method: :delete, data: {confirm: "Are you sure?"} %>
+        </li>
 
       <% else %>
-        <li><%= link_to "SignUp", new_user_registration_path %></li>
+        <li><%= link_to "Sign Up", new_user_registration_path %></li>
         <li><%= link_to "Login",  user_session_path %></li>
       <% end %>
     </ul>

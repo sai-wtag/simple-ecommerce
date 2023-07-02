@@ -3,7 +3,7 @@
 <table>
     <tr>
         <th> Item </th>
-        <th> Price </th>
+        <th> Price (BDT) </th>
         <th> Quantity </th>
     </tr>
     <% @order.order_items.each do |order_item| %>
@@ -12,7 +12,7 @@
                 <%= order_item.item.name %>
             </td>
             <td>
-                <%= order_item.item.name %>
+                <%= order_item.item.price %>
             </td>
             <td>
                 <%= order_item.quantity %>
