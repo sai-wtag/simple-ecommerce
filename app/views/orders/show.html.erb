@@ -13,13 +13,13 @@
                 <%= order_item.item.name %>
             </td>
             <td class="price">
-                <%= order_item.item.price %>
+                <%= order_item.price %>
             </td>
             <td>
                 <%= order_item.quantity %>
             </td>
             <td class="price">
-                <%= order_item.item.price * order_item.quantity %>
+                <%= order_item.price * order_item.quantity %>
             </td>
         </tr>
     <% end %>

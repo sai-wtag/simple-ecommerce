@@ -55,10 +55,10 @@ class OrdersController < ApplicationController
     order.save
 
     ordered_items.each do |item_id, quantity|
-      OrderItem.create(order_id: order.id, item_id: item_id, quantity: quantity)
+      current_item = Item.find(item_id)
+      OrderItem.create(order_id: order.id, item_id: item_id, quantity: quantity, price: current_item.price)
 
       # Update the available quantity of the item
-      current_item = Item.find(item_id)
       current_item.update(available_quantity: current_item.available_quantity - quantity.to_i)
     end
 
@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
   end
 
   def my_orders
-    @orders = Order.where(user_id: current_user.id).order(created_at: :asc)
+    @orders = Order.where(user_id: current_user.id).order(created_at: :desc)
   end
 
   def cancel_order
