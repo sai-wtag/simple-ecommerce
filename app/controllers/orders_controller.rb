@@ -11,11 +11,21 @@ class OrdersController < ApplicationController
   end
 
   def new
+    if current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      return redirect_to root_path
+    end
+
     @items = Item.all.order(created_at: :desc)
     @order = Order.new
   end
 
   def create
+    if current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      return redirect_to root_path
+    end
+
     item_ids = params[:order][:item_ids]
     quantities = params[:order][:quantities]
 
@@ -67,13 +77,18 @@ class OrdersController < ApplicationController
   end
 
   def my_orders
+    if current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      return redirect_to root_path
+    end
+
     @orders = Order.where(user_id: current_user.id).order(created_at: :desc)
   end
 
   def cancel_order
     order = Order.find(params[:id])
 
-    if !current_user.admin?  && order.user_id != current_user.id
+    if order.user_id != current_user.id
       flash[:error] = "You are not authorized to view this page"
       return redirect_to root_path
     end
