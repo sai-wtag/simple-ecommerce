@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <style>
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
   </head>
 
   <body>
@@ -24,7 +33,7 @@
     <p class="alert"><%= alert %></p>
     <p class="error"><%= flash[:error] %></p>
     <p class="success"><%= flash[:success] %></p>
-    
+
     <%= yield %>
   </body>
 </html>
