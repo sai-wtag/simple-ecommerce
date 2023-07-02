@@ -62,3 +62,7 @@ gem 'cancancan'
 gem "turbo-rails", "~> 1.4"
 
 gem "grape", "~> 1.7"
+gem 'grape_on_rails_routes'
+gem 'pry'
+gem 'rails-controller-testing'
+gem 'warden'
