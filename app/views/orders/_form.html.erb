@@ -1,8 +1,9 @@
 <%= form_with model: order do |f| %>
   <table>
     <tr>
-      <th>Item</th>
-      <th>Quantity</th>
+      <th> Item </th>
+      <th> Price </th>
+      <th> Quantity </th>
     </tr>
     <% @items.each do |product| %>
       <tr>
@@ -10,41 +11,33 @@
             <%= product.name %>
           </td>
           <td>
-          <%= f.hidden_field :item_ids, multiple: true, value: product[:id], name: "order[item_ids][]" %>
-          <%= f.number_field :quantities, name: "order[quantities][]", value: 0 %>
+            <%= product.price %>
+          </td>
+          <td>
+            <%= f.hidden_field :item_ids, multiple: true, value: product[:id], name: "order[item_ids][]" %>
+            <%= f.number_field :quantities, name: "order[quantities][]", value: 0 %>
           </td>
       </tr>
     <% end %>
   </table>
 
-  <div>
+  <div class="submit">
     <%= f.submit %>
   </div>
 <% end %>
 
 <style>
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  table, th, td {
+    border-collapse: collapse;
+    border: 1px solid black;
   }
 
-  .form__group {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+  th, td {
+    padding: 8px;
+    text-align: left;
   }
 
-  .form__label {
-    font-weight: bold;
-    width: 5rem;
-  }
-
-  .form__input {
-    width: 10rem;
-  }
-
-  .form__error {
-    color: red;
+  .submit {
+    margin-top: 20px;
   }
 </style>

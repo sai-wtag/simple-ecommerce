@@ -21,8 +21,10 @@
     </ul>
 
     <p class="notice"><%= notice %></p> 
-    <p class="alert"><%= alert %></p> 
-    <%= render 'shared/errors', errors: flash[:error] %>
+    <p class="alert"><%= alert %></p>
+    <p class="error"><%= flash[:error] %></p>
+    <p class="success"><%= flash[:success] %></p>
+    
     <%= yield %>
   </body>
 </html>

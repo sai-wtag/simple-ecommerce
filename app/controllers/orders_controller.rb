@@ -37,7 +37,12 @@ class OrdersController < ApplicationController
 
     items.each do |item_id, quantity|
       OrderItem.create(order_id: order.id, item_id: item_id, quantity: quantity)
+
+      current_item = Item.find(item_id)
+      current_item.update(available_quantity: current_item.available_quantity - quantity.to_i)
     end
 
+    flash[:success] = "Order created successfully"
+    redirect_to root_path
   end
 end
