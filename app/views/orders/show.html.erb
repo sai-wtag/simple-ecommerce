@@ -21,9 +21,7 @@
     <% end %>
 </table>
 
-<div class="submit">
-    <%= link_to "Back", my_orders_path %>
-</div>
+<a href="<%= request.referer %>">Go Back</a>
 
 <style>
     table, th, td {
@@ -34,9 +32,5 @@
     th, td {
         padding: 8px;
         text-align: left;
-    }
-
-    .submit {
-        margin-top: 20px;
     }
 </style>

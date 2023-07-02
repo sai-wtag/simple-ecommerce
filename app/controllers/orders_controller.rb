@@ -1,6 +1,15 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   
+  def index
+    if !current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      redirect_to root_path
+    end
+
+    @orders = Order.all.order(created_at: :desc)
+  end
+
   def new
     @items = Item.all.order(created_at: :desc)
     @order = Order.new
@@ -83,5 +92,24 @@ class OrdersController < ApplicationController
     end
     
     @order = order
+  end
+
+  def destroy
+    if !current_user.admin?
+      flash[:error] = "You are not authorized to view this page"
+      redirect_to root_path
+    end
+
+    order = Order.find(params[:id])
+
+    order.order_items.each do |order_item|
+      item = Item.find(order_item.item_id)
+      item.update(available_quantity: item.available_quantity + order_item.quantity)
+    end
+
+    order.destroy
+
+    flash[:success] = "Order deleted successfully"
+    redirect_to orders_path
   end
 end
