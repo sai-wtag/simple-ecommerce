@@ -1,0 +1,42 @@
+<h1> Order #<%= @order.id %> </h1>
+
+<table>
+    <tr>
+        <th> Item </th>
+        <th> Price </th>
+        <th> Quantity </th>
+    </tr>
+    <% @order.order_items.each do |order_item| %>
+        <tr>
+            <td>
+                <%= order_item.item.name %>
+            </td>
+            <td>
+                <%= order_item.item.name %>
+            </td>
+            <td>
+                <%= order_item.quantity %>
+            </td>
+        </tr>
+    <% end %>
+</table>
+
+<div class="submit">
+    <%= link_to "Back", my_orders_path %>
+</div>
+
+<style>
+    table, th, td {
+        border-collapse: collapse;
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    .submit {
+        margin-top: 20px;
+    }
+</style>

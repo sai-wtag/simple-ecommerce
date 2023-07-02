@@ -53,4 +53,28 @@ class OrdersController < ApplicationController
   def my_orders
     @orders = Order.where(user_id: current_user.id).order(created_at: :asc)
   end
+
+  def cancel_order
+    order = Order.find(params[:id])
+    order.update(order_status: "cancelled")
+
+    order.order_items.each do |order_item|
+      item = Item.find(order_item.item_id)
+      item.update(available_quantity: item.available_quantity + order_item.quantity)
+    end
+
+    flash[:success] = "Order cancelled successfully"
+    redirect_to my_orders_path
+  end
+
+  def show
+    order = Order.find(params[:id])
+
+    if !current_user.admin?  && order.user_id != current_user.id
+      flash[:error] = "You are not authorized to view this page"
+      redirect_to root_path
+    end
+    
+    @order = order
+  end
 end
