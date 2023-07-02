@@ -10,6 +10,9 @@ class OrdersController < ApplicationController
     item_ids = params[:order][:item_ids]
     quantities = params[:order][:quantities]
 
+    total_quantity = 0
+    total_price = 0
+
     ordered_items = Hash.new(0)
 
     # Make a key value pair of item_id and quantity
@@ -17,19 +20,23 @@ class OrdersController < ApplicationController
       if quantity.to_i > 0
         ordered_items[item_ids[index]] = quantity
       end
+
+      total_quantity += quantity.to_i
+    end
+
+    if total_quantity == 0
+      flash[:error] = "Please select at least one item"
+      return redirect_to new_order_path
     end
 
     # Fetch all the ordered items from the database
     items = Item.where(id: ordered_items.keys)
-    total_price = 0
     
     # Check if the ordered quantity is available in stock
     items.each do |item|
       if item.available_quantity < ordered_items[item.id.to_s].to_i
         flash[:error] = "Not enough #{item.name} in stock"
-        redirect_to new_order_path
-
-        return
+        return redirect_to new_order_path
       end
 
       total_price += item.price * ordered_items[item.id.to_s].to_i
