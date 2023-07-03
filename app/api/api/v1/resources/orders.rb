@@ -5,7 +5,8 @@ module V1
       format :json
       prefix :api
 
-      $user_id = 2
+      $user_id = 1
+      $user = User.find($user_id)
 
       resource :orders do
         desc "Return list of orders"
@@ -43,6 +44,32 @@ module V1
 
         order.update({
           order_status: "cancelled"
+        })
+        present order, with: V1::Entities::Order
+      end
+
+      desc "Change order status"
+      params do
+        requires :id, type: Integer, desc: "Order id"
+      end
+      put 'change-order-status/:id' do
+        order = Order.find(params[:id])
+
+        print $user.role
+        
+        if $user.role != "admin" || ["delivered", "cancelled"].include?(order.order_status)
+          error!('You are not allowed to change this order status', 403)
+        end
+
+        case order.order_status
+        when "pending"
+          new_status = "shipped"
+        when "shipped"
+          new_status = "delivered"
+        end          
+
+        order.update({
+          order_status: new_status
         })
         present order, with: V1::Entities::Order
       end
