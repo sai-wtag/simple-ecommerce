@@ -95,9 +95,11 @@ class OrdersController < ApplicationController
 
     order.update(order_status: "cancelled")
 
-    order.order_items.each do |order_item|
-      item = Item.find(order_item.item_id)
-      item.update(available_quantity: item.available_quantity + order_item.quantity)
+    if order.order_status != "cancelled"
+      order.order_items.each do |order_item|
+        item = Item.find(order_item.item_id)
+        item.update(available_quantity: item.available_quantity + order_item.quantity)
+      end
     end
 
     flash[:success] = "Order cancelled successfully"

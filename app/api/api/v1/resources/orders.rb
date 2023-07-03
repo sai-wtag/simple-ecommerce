@@ -96,12 +96,14 @@ module V1
 
           order = Order.find(params[:id])
 
-          # Update the available quantity of the item
-          order.order_items.each do |order_item|
-            item = Item.find(order_item.item_id)
-            item.update({
-              available_quantity: item.available_quantity + order_item.quantity
-            })
+          if order.order_status != "cancelled"
+            # Update the available quantity of the item
+            order.order_items.each do |order_item|
+              item = Item.find(order_item.item_id)
+              item.update({
+                available_quantity: item.available_quantity + order_item.quantity
+              })
+            end
           end
 
           order.destroy
@@ -126,12 +128,12 @@ module V1
       put 'cancel-order/:id' do
         order = Order.find(params[:id])
 
-        if order.order_status == "cancelled"
-          error!('This order has already been cancelled', 403)
+        if order.user_id != $user_id
+          error!('You are not allowed to cancel this order', 403)
         end
 
-        if order.order_status != "pending" || order.user_id != $user_id
-          error!('You are not allowed to cancel this order', 403)
+        if order.order_status != "pending"
+          error!("This order has already been #{order.order_status}, so you can not cancel this order", 403)
         end
 
         order.update({
@@ -156,8 +158,8 @@ module V1
       put 'change-order-status/:id' do
         order = Order.find(params[:id])
 
-        if $user.role != "admin"
-          error!('You are not allowed to change this order status', 403)
+        if $user.role == "admin"
+          error!('You are an admin, so you are not allowed to change this order status', 403)
         end
 
         if ["delivered", "cancelled"].include?(order.order_status)
