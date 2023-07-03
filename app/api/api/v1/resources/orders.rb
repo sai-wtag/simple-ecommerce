@@ -23,6 +23,21 @@ module V1
           order = Order.find(params[:id])
           present order, with: V1::Entities::Order
         end
+
+        desc "Delete an existing order"
+        params do
+          requires :id, type: Integer, desc: "Order id"
+        end
+        delete ':id' do
+          if $user.role != "admin"
+            error!('You are not allowed to change this order status', 403)
+          end
+
+          order = Order.find(params[:id])
+          order.destroy
+
+          present order, with: V1::Entities::Order, nested_attributes: false
+        end
       end
 
       desc "Return list of my orders"
@@ -56,7 +71,7 @@ module V1
         order = Order.find(params[:id])
 
         print $user.role
-        
+
         if $user.role != "admin" || ["delivered", "cancelled"].include?(order.order_status)
           error!('You are not allowed to change this order status', 403)
         end
@@ -73,6 +88,8 @@ module V1
         })
         present order, with: V1::Entities::Order
       end
+
+      
     end
   end
 end
