@@ -5,12 +5,17 @@ module V1
       format :json
       prefix :api
 
-      $user_id = 1
+      $user_id = 2
       $user = User.find($user_id)
 
       resource :orders do
         desc "Return list of orders"
         get do
+
+          if $user.role != "admin"
+            error!('You are not allowed to view this page', 403)
+          end
+
           orders = Order.all.order(created_at: :desc)
           present orders, with: V1::Entities::Order
         end
@@ -21,6 +26,11 @@ module V1
         end
         get ':id' do
           order = Order.find(params[:id])
+
+          if $user.role != "admin" && order.user_id != $user_id
+            error!('You are not allowed to view this page', 403)
+          end
+          
           present order, with: V1::Entities::Order
         end
 
