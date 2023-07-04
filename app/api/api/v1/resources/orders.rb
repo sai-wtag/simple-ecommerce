@@ -158,8 +158,8 @@ module V1
       put 'change-order-status/:id' do
         order = Order.find(params[:id])
 
-        if $user.role == "admin"
-          error!('You are an admin, so you are not allowed to change this order status', 403)
+        if $user.role != "admin"
+          error!('You are not allowed to change this order status', 403)
         end
 
         if ["delivered", "cancelled"].include?(order.order_status)
