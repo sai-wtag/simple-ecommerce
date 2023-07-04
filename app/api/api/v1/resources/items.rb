@@ -41,18 +41,18 @@ module V1
         desc "Update an existing item"
         params do
           requires :id, type: Integer, desc: "Item id"
-          requires :name, type: String, desc: "Item name"
-          requires :description, type: String, desc: "Item description"
-          requires :price, type: Float, desc: "Item price"
-          requires :available_quantity, type: Integer, desc: "Item available quantity"
+          optional :name, type: String, desc: "Item name"
+          optional :description, type: String, desc: "Item description"
+          optional :price, type: Float, desc: "Item price"
+          optional :available_quantity, type: Integer, desc: "Item available quantity"
         end
         put ':id' do
           item = Item.find(params[:id])
-          item.update({
-            name: params[:name],
-            description: params[:description],
-            price: params[:price],
-            available_quantity: params[:available_quantity]
+          item.update!({
+            name: params[:name] || item.name,
+            description: params[:description] || item.description,
+            price: params[:price] || item.price,
+            available_quantity: params[:available_quantity] || item.available_quantity
           })
           present item, with: V1::Entities::Item
         end
