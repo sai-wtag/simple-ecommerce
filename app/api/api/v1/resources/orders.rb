@@ -1,9 +1,18 @@
+require 'doorkeeper/grape/helpers'
+
 module V1
   module Resources
     class Orders < Grape::API
+      helpers Doorkeeper::Grape::Helpers
+
       version 'v1', using: :path
       format :json
       prefix :api
+
+      before do
+        doorkeeper_authorize!
+        @current_user ||= User.find(doorkeeper_token[:resource_owner_id])
+      end
 
       resource :orders do
         desc "Return list of orders"

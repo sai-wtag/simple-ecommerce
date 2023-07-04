@@ -1,11 +1,17 @@
+require 'doorkeeper/grape/helpers'
+
 module V1
   module Resources
     class Items < Grape::API
+      helpers Doorkeeper::Grape::Helpers
+
       version 'v1', using: :path
       format :json
       prefix :api
 
       before do
+        doorkeeper_authorize!
+        @current_user ||= User.find(doorkeeper_token[:resource_owner_id])
         error!('401 Unauthorized', 401) unless @current_user.admin?
       end
 
