@@ -5,6 +5,10 @@ module V1
       format :json
       prefix :api
 
+      before do
+        error!('401 Unauthorized', 401) unless @current_user.admin?
+      end
+
       resource :items do
         desc "Return list of items"
         get do
