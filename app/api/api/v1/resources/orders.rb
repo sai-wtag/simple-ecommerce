@@ -5,13 +5,11 @@ module V1
       format :json
       prefix :api
 
-      $user_id = 1
-      $user = User.find($user_id)
-
       resource :orders do
         desc "Return list of orders"
         get do
-          if $user.role != "admin"
+          
+          if !@current_user.admin?
             error!('You are not allowed to view this page', 403)
           end
 
@@ -24,9 +22,11 @@ module V1
           requires :id, type: Integer, desc: "Order id"
         end
         get ':id' do
+          print @current_user
+
           order = Order.find(params[:id])
 
-          if $user.role != "admin" && order.user_id != $user_id
+          if !@current_user.admin? && order.user_id != @current_user.id
             error!('You are not allowed to view this page', 403)
           end
           
@@ -38,7 +38,7 @@ module V1
           requires :order_items, type: Array
         end
         post do
-          if $user.role == "admin"
+          if @current_user.admin?
             error!('Your are an admin, so you are not allowed to create an order', 403)
           end
 
@@ -62,7 +62,7 @@ module V1
           end
 
           order = Order.create({
-            user_id: $user_id,
+            user_id: @current_user.id,
             order_status: "pending",
             total_price: total_price
           })
@@ -90,7 +90,7 @@ module V1
           requires :id, type: Integer, desc: "Order id"
         end
         delete ':id' do
-          if $user.role != "admin"
+          if !@current_user.admin?
             error!('You are not allowed to change this order status', 403)
           end
 
@@ -113,11 +113,11 @@ module V1
 
       desc "Return list of my orders"
       get 'my-orders' do
-        if $user.role == "admin"
+        if @current_user.admin?
           error!('You are not allowed to view this page', 403)
         end
 
-        orders = Order.where(user_id: $user_id).order(created_at: :desc)
+        orders = Order.where(user_id: @current_user.id).order(created_at: :desc)
         present orders, with: V1::Entities::Order
       end
 
@@ -127,9 +127,9 @@ module V1
       end
       put 'cancel-order/:id' do
         order = Order.find(params[:id])
-
-        if order.user_id != $user_id
-          error!('You are not allowed to cancel this order', 403)
+        
+        if @current_user.admin? || order.user_id != @current_user.id
+          error!('You are an admin, so you are not allowed to cancel this order', 403)
         end
 
         if order.order_status != "pending"
@@ -158,7 +158,7 @@ module V1
       put 'change-order-status/:id' do
         order = Order.find(params[:id])
 
-        if $user.role != "admin"
+        if !@current_user.admin?
           error!('You are not allowed to change this order status', 403)
         end
 
