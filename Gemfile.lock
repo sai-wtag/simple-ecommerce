@@ -88,6 +88,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    doorkeeper (5.5.1)
+      railties (>= 5)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -300,6 +302,7 @@ DEPENDENCIES
   cancancan
   capybara (>= 3.26)
   devise
+  doorkeeper
   dotenv-rails
   grape
   grape-entity
